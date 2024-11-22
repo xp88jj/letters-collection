@@ -1,0 +1,17 @@
+{
+    "letters": {
+      "1": {
+        "date": "1993-03-15",
+        "sender": "Smith",
+        "receiver": "Jones",
+        "notes": "Mentioned XYZ event."
+      },
+      "2": {
+        "date": "1994-07-23",
+        "sender": "Doe",
+        "receiver": "Smith",
+        "notes": "No digital copy available."
+      }
+    }
+  }
+  

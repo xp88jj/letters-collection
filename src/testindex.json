@@ -1,0 +1,14 @@
+{
+  "letters": {
+    "1": {
+      "id": "1",
+      "date": "1993-03-15",
+      "sender": "Smith",
+      "receiver": "Jones",
+      "type": "Scanned PDF",
+      "location": "Your Collection",
+      "fileLink": "https://example.com/sample.pdf",
+      "notes": "Mentioned XYZ event."
+    }
+  }
+}
