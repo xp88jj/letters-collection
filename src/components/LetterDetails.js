@@ -16,6 +16,32 @@ const LetterDetails = () => {
     return () => unsubscribe(); // Cleanup subscription on unmount
   }, [id]);
 
+  // Export letter details as JSON
+  const downloadAsJSON = () => {
+    const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(
+      JSON.stringify(letter, null, 2)
+    )}`;
+    const downloadAnchor = document.createElement("a");
+    downloadAnchor.href = dataStr;
+    downloadAnchor.download = `letter_${id}.json`;
+    downloadAnchor.click();
+  };
+
+  // Export letter details as CSV
+  const downloadAsCSV = () => {
+    const csvContent = [
+      ["Field", "Value"],
+      ...Object.entries(letter).map(([key, value]) => [key, value]),
+    ]
+      .map((row) => row.map((cell) => `"${cell}"`).join(","))
+      .join("\n");
+    const dataStr = `data:text/csv;charset=utf-8,${encodeURIComponent(csvContent)}`;
+    const downloadAnchor = document.createElement("a");
+    downloadAnchor.href = dataStr;
+    downloadAnchor.download = `letter_${id}.csv`;
+    downloadAnchor.click();
+  };
+
   if (!letter) {
     return (
       <div className="no-results">
@@ -66,6 +92,12 @@ const LetterDetails = () => {
       </div>
 
       <div className="btn-center">
+        <button onClick={downloadAsJSON} className="btn">
+          Download as JSON
+        </button>
+        <button onClick={downloadAsCSV} className="btn">
+          Download as CSV
+        </button>
         <Link to="/letters" className="btn">
           Back to Letters
         </Link>
