@@ -4,6 +4,7 @@ import Home from "./components/Home"; // Import the Home component
 import Letters from "./components/Letters"; // Import the Letters component
 import LetterDetails from "./components/LetterDetails"; // Import the LetterDetails component
 import AdminPanel from "./components/AdminPanel"; // Import the AdminPanel component
+import Statistics from "./components/Statistics"; // Import the Statistics component
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
 
         {/* Route for the Admin Panel */}
         <Route path="/admin" element={<AdminPanel />} />
+
+        {/* Route for the Statistics page */}
+        <Route path="/statistics" element={<Statistics />} />
       </Routes>
     </Router>
   );
