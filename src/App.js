@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
 import Letters from "./components/Letters";
 import LetterDetails from "./components/LetterDetails";
-import AdminPanel from "./components/AdminPanel";
 import Statistics from "./components/Statistics";
 import Visualizations from "./components/Visualizations";
 
@@ -14,7 +13,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/letters" element={<Letters />} />
         <Route path="/letters/:id" element={<LetterDetails />} />
-        <Route path="/admin" element={<AdminPanel />} />
         <Route path="/statistics" element={<Statistics />} />
         <Route path="/visualizations" element={<Visualizations />} />
       </Routes>

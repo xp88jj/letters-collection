@@ -17,9 +17,6 @@ const Home = () => {
         <Link to="/statistics" className="btn" style={{ marginTop: "10px" }}>
           View Statistics
         </Link>
-        <Link to="/admin" className="btn" style={{ marginTop: "10px" }}>
-          Go to Admin Panel
-        </Link>
       </div>
     </div>
   );
