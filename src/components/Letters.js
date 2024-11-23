@@ -7,6 +7,10 @@ import "../App.css"; // Import the CSS file
 const Letters = () => {
   const [letters, setLetters] = useState([]);
   const [filteredLetters, setFilteredLetters] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0); // Current page index
+  const [paginatedLetters, setPaginatedLetters] = useState([]); // Paginated data
+  const itemsPerPage = 10; // Number of letters per page
+
   const [searchTerm, setSearchTerm] = useState("");
   const [filterByAccess, setFilterByAccess] = useState("All");
   const [filterByType, setFilterByType] = useState("All");
@@ -26,14 +30,25 @@ const Letters = () => {
         }));
         setLetters(lettersArray);
         setFilteredLetters(lettersArray);
+        paginate(lettersArray); // Initial pagination
       } else {
         setLetters([]);
         setFilteredLetters([]);
+        setPaginatedLetters([]);
       }
     });
 
     return () => off(lettersRef, "value", unsubscribe);
   }, []);
+
+  const paginate = (data) => {
+    const totalPages = Math.ceil(data.length / itemsPerPage);
+    const pages = Array.from({ length: totalPages }, (_, index) => {
+      const start = index * itemsPerPage;
+      return data.slice(start, start + itemsPerPage);
+    });
+    setPaginatedLetters(pages);
+  };
 
   const applyFilters = (
     searchValue,
@@ -80,6 +95,7 @@ const Letters = () => {
     }
 
     setFilteredLetters(results);
+    paginate(results); // Recalculate pagination after filtering
   };
 
   const handleSearch = (event) => {
@@ -116,6 +132,10 @@ const Letters = () => {
     const endDate = event.target.value;
     setEndDate(endDate);
     applyFilters(searchTerm, filterByAccess, filterByType, startDate, endDate, filterByLocation);
+  };
+
+  const handlePageChange = (pageIndex) => {
+    setCurrentPage(pageIndex);
   };
 
   return (
@@ -173,7 +193,7 @@ const Letters = () => {
       </div>
 
       <ul className="letter-list">
-        {filteredLetters.map((letter) => (
+        {paginatedLetters[currentPage]?.map((letter) => (
           <li key={letter.id} className="letter-item">
             <strong>{letter.date}</strong>: {letter.sender} to {letter.receiver}
             <br />
@@ -187,6 +207,19 @@ const Letters = () => {
       </ul>
 
       {filteredLetters.length === 0 && <p className="no-results">No letters found matching your criteria.</p>}
+
+      {/* Pagination Controls */}
+      <div className="pagination">
+        {paginatedLetters.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index)}
+            className={`btn ${currentPage === index ? "active" : ""}`}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
