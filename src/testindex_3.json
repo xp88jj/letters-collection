@@ -1,0 +1,115 @@
+{
+    "letters": {
+      "letter1": {
+        "id": "1",
+        "date": "1993-03-15",
+        "sender": "Smith",
+        "receiver": "Jones",
+        "type": "Scanned PDF",
+        "location": "Your Collection",
+        "fileLink": "https://storage-link-to-letter1.pdf",
+        "notes": "Mentioned XYZ event.",
+        "access": "Public"
+      },
+      "letter2": {
+        "id": "2",
+        "date": "1994-07-23",
+        "sender": "Doe",
+        "receiver": "Smith",
+        "type": "Original",
+        "location": "Library XYZ",
+        "fileLink": "",
+        "notes": "No digital copy available.",
+        "access": "Restricted"
+      },
+      "letter3": {
+        "id": "3",
+        "date": "1985-11-12",
+        "sender": "Taylor",
+        "receiver": "Doe",
+        "type": "Typed Transcript",
+        "location": "Family Archive",
+        "fileLink": "https://storage-link-to-letter3.pdf",
+        "notes": "Details about historical event ABC.",
+        "access": "Public"
+      },
+      "letter4": {
+        "id": "4",
+        "date": "2001-05-22",
+        "sender": "Brown",
+        "receiver": "Taylor",
+        "type": "Photocopy",
+        "location": "National Library",
+        "fileLink": "https://storage-link-to-letter4.pdf",
+        "notes": "Referenced by multiple researchers.",
+        "access": "Public"
+      },
+      "letter5": {
+        "id": "5",
+        "date": "1999-08-19",
+        "sender": "Smith",
+        "receiver": "Brown",
+        "type": "Original",
+        "location": "Private Collection",
+        "fileLink": "",
+        "notes": "Handwritten notes difficult to decipher.",
+        "access": "Restricted"
+      },
+      "letter6": {
+        "id": "6",
+        "date": "2010-02-14",
+        "sender": "Green",
+        "receiver": "Smith",
+        "type": "Email Transcript",
+        "location": "Digital Archive",
+        "fileLink": "https://storage-link-to-letter6.pdf",
+        "notes": "Email correspondence about project DEF.",
+        "access": "Public"
+      },
+      "letter7": {
+        "id": "7",
+        "date": "1976-09-01",
+        "sender": "Adams",
+        "receiver": "Green",
+        "type": "Scanned PDF",
+        "location": "University Library",
+        "fileLink": "https://storage-link-to-letter7.pdf",
+        "notes": "Key insights on historical topic GHI.",
+        "access": "Restricted"
+      },
+      "letter8": {
+        "id": "8",
+        "date": "1989-04-10",
+        "sender": "Clark",
+        "receiver": "Adams",
+        "type": "Typed Transcript",
+        "location": "Personal Archive",
+        "fileLink": "",
+        "notes": "Copy made from original letter.",
+        "access": "Restricted"
+      },
+      "letter9": {
+        "id": "9",
+        "date": "2005-07-04",
+        "sender": "Brown",
+        "receiver": "Clark",
+        "type": "Email Transcript",
+        "location": "Digital Archive",
+        "fileLink": "https://storage-link-to-letter9.pdf",
+        "notes": "Discussed technical project XYZ.",
+        "access": "Public"
+      },
+      "letter10": {
+        "id": "10",
+        "date": "1992-12-30",
+        "sender": "Jones",
+        "receiver": "Brown",
+        "type": "Photocopy",
+        "location": "University Archive",
+        "fileLink": "https://storage-link-to-letter10.pdf",
+        "notes": "High-resolution scan available.",
+        "access": "Public"
+      }
+    }
+  }
+  
