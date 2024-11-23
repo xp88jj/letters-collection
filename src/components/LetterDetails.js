@@ -41,12 +41,31 @@ const LetterDetails = () => {
   };
 
   const downloadAsCSV = () => {
-    const csvContent = [
-      ["Field", "Value"],
-      ...Object.entries(letter).map(([key, value]) => [key, value]),
-    ]
-      .map((row) => row.map((cell) => `"${cell}"`).join(","))
-      .join("\n");
+    // Define the desired order of fields
+    const orderedKeys = [
+      "id",
+      "date",
+      "sender",
+      "receiver",
+      "type",
+      "location",
+      "access",
+      "notes",
+      "fileLink",
+    ];
+  
+    // Create the header row based on the desired order
+    const headers = orderedKeys.join(",");
+  
+    // Create the data row based on the desired order
+    const values = orderedKeys
+      .map((key) => (letter[key] !== undefined ? `"${letter[key]}"` : '""'))
+      .join(",");
+  
+    // Combine the header and values into the CSV content
+    const csvContent = `${headers}\n${values}`;
+  
+    // Generate the download link
     const dataStr = `data:text/csv;charset=utf-8,${encodeURIComponent(csvContent)}`;
     const downloadAnchor = document.createElement("a");
     downloadAnchor.href = dataStr;
