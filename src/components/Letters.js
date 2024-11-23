@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { database } from "../firebaseConfig";
 import { ref, onValue } from "firebase/database";
+import debounce from "lodash/debounce";
 import "../App.css";
 
 const Letters = () => {
@@ -11,6 +12,7 @@ const Letters = () => {
   const itemsPerPage = 10;
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [filterByAccess, setFilterByAccess] = useState("All");
   const [filterByType, setFilterByType] = useState("All");
   const [startDate, setStartDate] = useState("");
@@ -51,15 +53,31 @@ const Letters = () => {
     setCurrentPage(pageIndex);
   };
 
-  const applyFilters = useCallback(() => {
+  // Debounced search handler using useMemo
+  const debouncedUpdateSearchTerm = useMemo(
+    () =>
+      debounce((term) => {
+        setDebouncedSearchTerm(term);
+      }, 300), // Adjust delay (e.g., 300ms)
+    [] // Empty dependency array ensures memoized debounce is stable
+  );
+
+  const handleSearchChange = (e) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term); // Update immediately for display
+    debouncedUpdateSearchTerm(term); // Debounce actual filtering
+  };
+
+  // Filtering logic using useMemo
+  const filteredLetters = useMemo(() => {
     let results = letters;
 
-    if (searchTerm) {
+    if (debouncedSearchTerm) {
       results = results.filter(
         (letter) =>
-          letter.sender.toLowerCase().includes(searchTerm) ||
-          letter.receiver.toLowerCase().includes(searchTerm) ||
-          letter.notes.toLowerCase().includes(searchTerm)
+          letter.sender.toLowerCase().includes(debouncedSearchTerm) ||
+          letter.receiver.toLowerCase().includes(debouncedSearchTerm) ||
+          letter.notes.toLowerCase().includes(debouncedSearchTerm)
       );
     }
 
@@ -88,15 +106,31 @@ const Letters = () => {
       );
     }
 
-    paginate(results); // Recalculate pagination after filtering
-  }, [letters, searchTerm, filterByAccess, filterByType, startDate, endDate, filterByLocation]);
+    return results;
+  }, [
+    letters,
+    debouncedSearchTerm,
+    filterByAccess,
+    filterByType,
+    startDate,
+    endDate,
+    filterByLocation,
+  ]);
 
+  // Recalculate pagination whenever the filtered list changes
   useEffect(() => {
-    applyFilters();
-  }, [applyFilters]);
+    paginate(filteredLetters);
+  }, [filteredLetters]);
 
   return (
     <div className="container">
+      {/* Back to Home Button */}
+      <div className="btn-center" style={{ marginBottom: "20px" }}>
+        <Link to="/" className="btn">
+          Back to Home
+        </Link>
+      </div>
+
       <h1 className="heading">Letters</h1>
 
       {/* Filters */}
@@ -106,7 +140,7 @@ const Letters = () => {
             type="text"
             placeholder="Search by sender, receiver, or notes..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchChange}
             className="form-input"
           />
         </div>
