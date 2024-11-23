@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { database } from "../firebaseConfig";
 import { ref, onValue, off } from "firebase/database";
+import "../App.css"; // Import the CSS file
 
 const Letters = () => {
   const [letters, setLetters] = useState([]);
@@ -118,67 +119,28 @@ const Letters = () => {
   };
 
   return (
-    <div style={{ maxWidth: "800px", margin: "0 auto", padding: "20px" }}>
-      {/* Centered Letters Heading */}
-      <h1 style={{ textAlign: "center", fontSize: "32px", marginBottom: "20px", color: "#333" }}>
-        Letters
-      </h1>
+    <div className="container">
+      <h1 className="heading">Letters</h1>
 
-      {/* Filters Container */}
-      <div
-        style={{
-          border: "1px solid #ccc",
-          borderRadius: "8px",
-          padding: "15px",
-          marginBottom: "20px",
-          backgroundColor: "#f9f9f9",
-        }}
-      >
-        <div style={{ marginBottom: "10px" }}>
+      <div className="filters-container">
+        <div>
           <input
             type="text"
             placeholder="Search by sender, receiver, or notes..."
             value={searchTerm}
             onChange={handleSearch}
-            style={{
-              fontSize: "16px",
-              padding: "10px",
-              width: "100%",
-              boxSizing: "border-box",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-            }}
+            className="form-input"
           />
         </div>
 
-        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "10px" }}>
-          <select
-            onChange={handleFilterByAccess}
-            value={filterByAccess}
-            style={{
-              flex: "1",
-              fontSize: "16px",
-              padding: "10px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-            }}
-          >
+        <div className="filters-group">
+          <select onChange={handleFilterByAccess} value={filterByAccess} className="form-select">
             <option value="All">All Access Levels</option>
             <option value="Public">Public</option>
             <option value="Restricted">Restricted</option>
           </select>
 
-          <select
-            onChange={handleFilterByType}
-            value={filterByType}
-            style={{
-              flex: "1",
-              fontSize: "16px",
-              padding: "10px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-            }}
-          >
+          <select onChange={handleFilterByType} value={filterByType} className="form-select">
             <option value="All">All Types</option>
             <option value="Scanned PDF">Scanned PDF</option>
             <option value="Original">Original</option>
@@ -188,49 +150,19 @@ const Letters = () => {
           </select>
         </div>
 
-        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "10px" }}>
-          <div style={{ flex: "1" }}>
+        <div className="filters-group">
+          <div>
             <label>Start Date:</label>
-            <input
-              type="date"
-              onChange={handleStartDateChange}
-              style={{
-                fontSize: "16px",
-                padding: "10px",
-                borderRadius: "4px",
-                border: "1px solid #ccc",
-                width: "100%",
-              }}
-            />
+            <input type="date" onChange={handleStartDateChange} className="form-input" />
           </div>
-          <div style={{ flex: "1" }}>
+          <div>
             <label>End Date:</label>
-            <input
-              type="date"
-              onChange={handleEndDateChange}
-              style={{
-                fontSize: "16px",
-                padding: "10px",
-                borderRadius: "4px",
-                border: "1px solid #ccc",
-                width: "100%",
-              }}
-            />
+            <input type="date" onChange={handleEndDateChange} className="form-input" />
           </div>
         </div>
 
-        <div style={{ marginBottom: "10px" }}>
-          <select
-            onChange={handleFilterByLocation}
-            value={filterByLocation}
-            style={{
-              fontSize: "16px",
-              padding: "10px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              width: "100%",
-            }}
-          >
+        <div>
+          <select onChange={handleFilterByLocation} value={filterByLocation} className="form-select">
             <option value="All">All Locations</option>
             <option value="Library XYZ">Library XYZ</option>
             <option value="Family Archive">Family Archive</option>
@@ -240,20 +172,21 @@ const Letters = () => {
         </div>
       </div>
 
-      {/* Filtered Letter List */}
-      <ul>
+      <ul className="letter-list">
         {filteredLetters.map((letter) => (
-          <li key={letter.id}>
+          <li key={letter.id} className="letter-item">
             <strong>{letter.date}</strong>: {letter.sender} to {letter.receiver}
             <br />
             <em>Notes: {letter.notes}</em>
             <br />
-            <Link to={`/letters/${letter.id.replace("letter", "")}`}>View Details</Link>
+            <Link to={`/letters/${letter.id.replace("letter", "")}`} className="btn-link">
+              View Details
+            </Link>
           </li>
         ))}
       </ul>
 
-      {filteredLetters.length === 0 && <p>No letters found matching your criteria.</p>}
+      {filteredLetters.length === 0 && <p className="no-results">No letters found matching your criteria.</p>}
     </div>
   );
 };

@@ -1,38 +1,213 @@
-.App {
+/* Global container styling for consistent layout */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+/* Centered heading styles */
+.heading {
   text-align: center;
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: bold;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Description paragraph styling */
+.description {
+  font-size: 18px;
+  margin-bottom: 30px;
+  color: #555;
+  line-height: 1.8; /* Improved readability */
+  text-align: justify; /* Optional: Justify text */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Filters container styling */
+.filters-container {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Filters group styling for better alignment */
+.filters-group {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+/* Form input and select elements */
+.form-input,
+.form-select {
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.form-input:focus,
+.form-select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5); /* Add focus effect */
+}
+
+/* Button styling */
+.btn {
+  display: inline-block;
+  padding: 15px 30px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  transition: background-color 0.3s ease; /* Smooth hover transition */
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+/* Links styling */
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Letter list styling */
+.letter-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.letter-item {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+  font-size: 16px;
+}
+
+.letter-item strong {
+  font-weight: bold;
+  color: #333;
+}
+
+.letter-item em {
+  color: #666;
+  font-style: italic;
+}
+
+/* View Details link styling */
+.btn-link {
+  color: #007bff;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+/* No results message */
+.no-results {
+  color: #555;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Letter Details styling */
+.letter-details {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Add depth */
+}
+
+.letter-details p {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.letter-details p strong {
+  color: #007bff;
+  font-weight: bold;
+}
+
+/* Admin panel form styling */
+.admin-form {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.admin-form label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.admin-form input,
+.admin-form textarea {
+  width: 100%;
+  font-size: 16px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.admin-form button {
+  width: 100%;
+  font-size: 18px;
+  padding: 10px;
   color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.App-link {
-  color: #61dafb;
+.admin-form button:hover {
+  background-color: #0056b3;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Center alignment utility */
+.center {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Centering the button container */
+.btn-center {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; /* Optional spacing */
 }
