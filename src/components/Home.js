@@ -13,6 +13,9 @@ const Home = () => {
         <Link to="/letters" className="btn">
           View the Collection
         </Link>
+        <Link to="/admin" className="btn" style={{ marginTop: "10px" }}>
+          Go to Admin Panel
+        </Link>
       </div>
     </div>
   );

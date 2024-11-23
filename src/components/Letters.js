@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { database } from "../firebaseConfig";
-import { ref, onValue, off } from "firebase/database";
-import "../App.css"; // Import the CSS file
+import { ref, onValue } from "firebase/database";
+import "../App.css";
 
 const Letters = () => {
   const [letters, setLetters] = useState([]);
-  const [filteredLetters, setFilteredLetters] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0); // Current page index
-  const [paginatedLetters, setPaginatedLetters] = useState([]); // Paginated data
-  const itemsPerPage = 10; // Number of letters per page
+  const [currentPage, setCurrentPage] = useState(0);
+  const [paginatedLetters, setPaginatedLetters] = useState([]);
+  const itemsPerPage = 10;
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filterByAccess, setFilterByAccess] = useState("All");
@@ -29,16 +28,14 @@ const Letters = () => {
           ...value,
         }));
         setLetters(lettersArray);
-        setFilteredLetters(lettersArray);
         paginate(lettersArray); // Initial pagination
       } else {
         setLetters([]);
-        setFilteredLetters([]);
         setPaginatedLetters([]);
       }
     });
 
-    return () => off(lettersRef, "value", unsubscribe);
+    return () => unsubscribe();
   }, []);
 
   const paginate = (data) => {
@@ -50,34 +47,31 @@ const Letters = () => {
     setPaginatedLetters(pages);
   };
 
-  const applyFilters = (
-    searchValue,
-    selectedAccess,
-    selectedType,
-    startDate,
-    endDate,
-    selectedLocation
-  ) => {
+  const handlePageChange = (pageIndex) => {
+    setCurrentPage(pageIndex);
+  };
+
+  const applyFilters = useCallback(() => {
     let results = letters;
 
-    if (searchValue) {
+    if (searchTerm) {
       results = results.filter(
         (letter) =>
-          letter.sender.toLowerCase().includes(searchValue) ||
-          letter.receiver.toLowerCase().includes(searchValue) ||
-          letter.notes.toLowerCase().includes(searchValue)
+          letter.sender.toLowerCase().includes(searchTerm) ||
+          letter.receiver.toLowerCase().includes(searchTerm) ||
+          letter.notes.toLowerCase().includes(searchTerm)
       );
     }
 
-    if (selectedAccess !== "All") {
+    if (filterByAccess !== "All") {
       results = results.filter(
-        (letter) => letter.access.toLowerCase() === selectedAccess.toLowerCase()
+        (letter) => letter.access.toLowerCase() === filterByAccess.toLowerCase()
       );
     }
 
-    if (selectedType !== "All") {
+    if (filterByType !== "All") {
       results = results.filter(
-        (letter) => letter.type.toLowerCase() === selectedType.toLowerCase()
+        (letter) => letter.type.toLowerCase() === filterByType.toLowerCase()
       );
     }
 
@@ -88,79 +82,43 @@ const Letters = () => {
       results = results.filter((letter) => new Date(letter.date) <= new Date(endDate));
     }
 
-    if (selectedLocation !== "All") {
+    if (filterByLocation !== "All") {
       results = results.filter(
-        (letter) => letter.location.toLowerCase() === selectedLocation.toLowerCase()
+        (letter) => letter.location.toLowerCase() === filterByLocation.toLowerCase()
       );
     }
 
-    setFilteredLetters(results);
     paginate(results); // Recalculate pagination after filtering
-  };
+  }, [letters, searchTerm, filterByAccess, filterByType, startDate, endDate, filterByLocation]);
 
-  const handleSearch = (event) => {
-    const searchValue = event.target.value.toLowerCase();
-    setSearchTerm(searchValue);
-    applyFilters(searchValue, filterByAccess, filterByType, startDate, endDate, filterByLocation);
-  };
-
-  const handleFilterByAccess = (event) => {
-    const selectedAccess = event.target.value;
-    setFilterByAccess(selectedAccess);
-    applyFilters(searchTerm, selectedAccess, filterByType, startDate, endDate, filterByLocation);
-  };
-
-  const handleFilterByType = (event) => {
-    const selectedType = event.target.value;
-    setFilterByType(selectedType);
-    applyFilters(searchTerm, filterByAccess, selectedType, startDate, endDate, filterByLocation);
-  };
-
-  const handleFilterByLocation = (event) => {
-    const selectedLocation = event.target.value;
-    setFilterByLocation(selectedLocation);
-    applyFilters(searchTerm, filterByAccess, filterByType, startDate, endDate, selectedLocation);
-  };
-
-  const handleStartDateChange = (event) => {
-    const startDate = event.target.value;
-    setStartDate(startDate);
-    applyFilters(searchTerm, filterByAccess, filterByType, startDate, endDate, filterByLocation);
-  };
-
-  const handleEndDateChange = (event) => {
-    const endDate = event.target.value;
-    setEndDate(endDate);
-    applyFilters(searchTerm, filterByAccess, filterByType, startDate, endDate, filterByLocation);
-  };
-
-  const handlePageChange = (pageIndex) => {
-    setCurrentPage(pageIndex);
-  };
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
 
   return (
     <div className="container">
       <h1 className="heading">Letters</h1>
 
+      {/* Filters */}
       <div className="filters-container">
         <div>
           <input
             type="text"
             placeholder="Search by sender, receiver, or notes..."
             value={searchTerm}
-            onChange={handleSearch}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="form-input"
           />
         </div>
 
         <div className="filters-group">
-          <select onChange={handleFilterByAccess} value={filterByAccess} className="form-select">
+          <select onChange={(e) => setFilterByAccess(e.target.value)} value={filterByAccess} className="form-select">
             <option value="All">All Access Levels</option>
             <option value="Public">Public</option>
             <option value="Restricted">Restricted</option>
           </select>
 
-          <select onChange={handleFilterByType} value={filterByType} className="form-select">
+          <select onChange={(e) => setFilterByType(e.target.value)} value={filterByType} className="form-select">
             <option value="All">All Types</option>
             <option value="Scanned PDF">Scanned PDF</option>
             <option value="Original">Original</option>
@@ -173,16 +131,26 @@ const Letters = () => {
         <div className="filters-group">
           <div>
             <label>Start Date:</label>
-            <input type="date" onChange={handleStartDateChange} className="form-input" />
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="form-input"
+            />
           </div>
           <div>
             <label>End Date:</label>
-            <input type="date" onChange={handleEndDateChange} className="form-input" />
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="form-input"
+            />
           </div>
         </div>
 
         <div>
-          <select onChange={handleFilterByLocation} value={filterByLocation} className="form-select">
+          <select onChange={(e) => setFilterByLocation(e.target.value)} value={filterByLocation} className="form-select">
             <option value="All">All Locations</option>
             <option value="Library XYZ">Library XYZ</option>
             <option value="Family Archive">Family Archive</option>
@@ -192,6 +160,7 @@ const Letters = () => {
         </div>
       </div>
 
+      {/* Letter List */}
       <ul className="letter-list">
         {paginatedLetters[currentPage]?.map((letter) => (
           <li key={letter.id} className="letter-item">
@@ -199,16 +168,14 @@ const Letters = () => {
             <br />
             <em>Notes: {letter.notes}</em>
             <br />
-            <Link to={`/letters/${letter.id.replace("letter", "")}`} className="btn-link">
+            <Link to={`/letters/${letter.id}`} className="btn-link">
               View Details
             </Link>
           </li>
         ))}
       </ul>
 
-      {filteredLetters.length === 0 && <p className="no-results">No letters found matching your criteria.</p>}
-
-      {/* Pagination Controls */}
+      {/* Pagination */}
       <div className="pagination">
         {paginatedLetters.map((_, index) => (
           <button
