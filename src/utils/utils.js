@@ -3,6 +3,53 @@
 const generateLetters = () => {
   const letters = {};
 
+  // Predefined lists of realistic sender and receiver names
+  const senderNames = [
+    "Alice Johnson",
+    "Bob Smith",
+    "Charlotte Brown",
+    "David Williams",
+    "Ella Davis",
+    "Frank Wilson",
+    "Grace Miller",
+    "Henry Moore",
+    "Isabella Taylor",
+    "James Anderson",
+    "Karen Thomas",
+    "Liam Lee",
+    "Mia Harris",
+    "Noah Martin",
+    "Olivia White",
+    "Paul Thompson",
+    "Quinn Garcia",
+    "Ryan Martinez",
+    "Sophia Clark",
+    "Thomas Lewis",
+  ];
+
+  const receiverNames = [
+    "Victoria King",
+    "William Scott",
+    "Xavier Hall",
+    "Yasmine Lopez",
+    "Zachary Hill",
+    "Amelia Perez",
+    "Benjamin Walker",
+    "Chloe Adams",
+    "Daniel Baker",
+    "Emma Carter",
+    "Fiona Rivera",
+    "George Phillips",
+    "Hannah Stewart",
+    "Ian Sanchez",
+    "Julia Reed",
+    "Kyle Butler",
+    "Luna Collins",
+    "Matthew Bell",
+    "Natalie Mitchell",
+    "Owen Parker",
+  ];
+
   for (let i = 1; i <= 100; i++) {
     letters[`letter${i}`] = {
       id: `${i}`,
@@ -12,8 +59,8 @@ const generateLetters = () => {
         2,
         "0"
       )}`,
-      sender: `Sender${i}`,
-      receiver: `Receiver${i}`,
+      sender: senderNames[Math.floor(Math.random() * senderNames.length)],
+      receiver: receiverNames[Math.floor(Math.random() * receiverNames.length)],
       type: [
         "Scanned PDF",
         "Original",

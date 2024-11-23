@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { database } from "../firebaseConfig";
 import { ref, onValue } from "firebase/database";
 import "../App.css";
@@ -53,6 +54,13 @@ const Statistics = () => {
 
   return (
     <div className="container">
+      {/* Back to Home Button */}
+      <div className="btn-container">
+        <Link to="/" className="btn">
+          Back to Home Page
+        </Link>
+      </div>
+
       <h1 className="heading">Collection Statistics</h1>
       <div className="statistics-overview">
         <p><strong>Total Letters:</strong> {statistics.totalLetters}</p>
@@ -74,6 +82,13 @@ const Statistics = () => {
             <li key={type}>{type}: {count}</li>
           ))}
         </ul>
+      </div>
+
+      {/* Go to Visualizations Button */}
+      <div className="btn-container">
+        <Link to="/visualizations" className="btn">
+          Go to Visualizations
+        </Link>
       </div>
     </div>
   );

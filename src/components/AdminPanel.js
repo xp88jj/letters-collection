@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { database } from "../firebaseConfig";
-import { ref, set, push, onValue, remove } from "firebase/database";
-import "../App.css"; // Ensure consistent styles
+import { ref, onValue, push, update, remove } from "firebase/database";
+import "../App.css";
 
 const AdminPanel = () => {
-  const [letters, setLetters] = useState({});
-  const [formData, setFormData] = useState({
+  const [letters, setLetters] = useState([]);
+  const [currentLetter, setCurrentLetter] = useState({
     id: "",
     date: "",
     sender: "",
@@ -14,186 +15,175 @@ const AdminPanel = () => {
     location: "",
     fileLink: "",
     notes: "",
-    access: "",
+    access: "Public",
   });
-  const [editMode, setEditMode] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
-  // Fetch letters from Firebase
   useEffect(() => {
     const lettersRef = ref(database, "letters");
     onValue(lettersRef, (snapshot) => {
-      setLetters(snapshot.val() || {});
+      const data = snapshot.val();
+      if (data) {
+        const lettersArray = Object.entries(data).map(([key, value]) => ({
+          id: key,
+          ...value,
+        }));
+        setLetters(lettersArray);
+      } else {
+        setLetters([]);
+      }
     });
   }, []);
 
-  // Handle input change
-  const handleChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setCurrentLetter((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Add or Update a letter
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const letterRef = editMode
-      ? ref(database, `letters/letter${formData.id}`)
-      : push(ref(database, "letters"));
-
-    set(letterRef, formData).then(() => {
-      alert(editMode ? "Letter updated successfully!" : "Letter added successfully!");
-      setFormData({
-        id: "",
-        date: "",
-        sender: "",
-        receiver: "",
-        type: "",
-        location: "",
-        fileLink: "",
-        notes: "",
-        access: "",
-      });
-      setEditMode(false);
-    });
-  };
-
-  // Edit a letter
-  const handleEdit = (id) => {
-    const letter = letters[`letter${id}`];
-    setFormData({ ...letter, id });
-    setEditMode(true);
-  };
-
-  // Delete a letter
-  const handleDelete = (id) => {
-    if (window.confirm(`Are you sure you want to delete letter ${id}?`)) {
-      remove(ref(database, `letters/letter${id}`)).then(() => {
-        alert("Letter deleted successfully!");
-      });
+  const handleAddOrUpdate = () => {
+    if (isEditing) {
+      const letterRef = ref(database, `letters/${currentLetter.id}`);
+      update(letterRef, currentLetter);
+    } else {
+      const newLetterRef = push(ref(database, "letters"));
+      update(newLetterRef, currentLetter);
     }
+    setCurrentLetter({
+      id: "",
+      date: "",
+      sender: "",
+      receiver: "",
+      type: "",
+      location: "",
+      fileLink: "",
+      notes: "",
+      access: "Public",
+    });
+    setIsEditing(false);
+  };
+
+  const handleEdit = (letter) => {
+    setCurrentLetter(letter);
+    setIsEditing(true);
+  };
+
+  const handleDelete = (id) => {
+    const letterRef = ref(database, `letters/${id}`);
+    remove(letterRef);
   };
 
   return (
     <div className="container">
+      {/* Back to Home Button */}
+      <div className="btn-container">
+        <Link to="/" className="btn">
+          Back to Home
+        </Link>
+      </div>
+
       <h1 className="heading">Admin Panel</h1>
 
-      {/* Form to Add/Edit Metadata */}
-      <form onSubmit={handleSubmit} className="admin-form">
+      {/* Add/Edit Form */}
+      <div className="admin-form">
+        <h2>{isEditing ? "Edit Letter" : "Add New Letter"}</h2>
         <label>ID (Leave empty for auto-generated ID):</label>
         <input
           type="text"
           name="id"
-          value={formData.id}
-          onChange={handleChange}
-          placeholder="e.g., 1"
-          disabled={editMode}
+          value={currentLetter.id}
+          onChange={handleInputChange}
+          disabled={isEditing} // Prevent editing ID when editing an existing letter
         />
-
         <label>Date:</label>
         <input
           type="date"
           name="date"
-          value={formData.date}
-          onChange={handleChange}
-          required
+          value={currentLetter.date}
+          onChange={handleInputChange}
         />
-
         <label>Sender:</label>
         <input
           type="text"
           name="sender"
-          value={formData.sender}
-          onChange={handleChange}
-          required
+          value={currentLetter.sender}
+          onChange={handleInputChange}
         />
-
         <label>Receiver:</label>
         <input
           type="text"
           name="receiver"
-          value={formData.receiver}
-          onChange={handleChange}
-          required
+          value={currentLetter.receiver}
+          onChange={handleInputChange}
         />
-
         <label>Type:</label>
-        <select
+        <input
+          type="text"
           name="type"
-          value={formData.type}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select Type</option>
-          <option value="Scanned PDF">Scanned PDF</option>
-          <option value="Original">Original</option>
-          <option value="Typed Transcript">Typed Transcript</option>
-          <option value="Photocopy">Photocopy</option>
-          <option value="Email Transcript">Email Transcript</option>
-        </select>
-
+          value={currentLetter.type}
+          onChange={handleInputChange}
+        />
         <label>Location:</label>
         <input
           type="text"
           name="location"
-          value={formData.location}
-          onChange={handleChange}
-          required
+          value={currentLetter.location}
+          onChange={handleInputChange}
         />
-
         <label>File Link:</label>
         <input
-          type="url"
+          type="text"
           name="fileLink"
-          value={formData.fileLink}
-          onChange={handleChange}
+          value={currentLetter.fileLink}
+          onChange={handleInputChange}
         />
-
         <label>Notes:</label>
         <textarea
           name="notes"
-          value={formData.notes}
-          onChange={handleChange}
-        ></textarea>
-
+          value={currentLetter.notes}
+          onChange={handleInputChange}
+        />
         <label>Access:</label>
         <select
           name="access"
-          value={formData.access}
-          onChange={handleChange}
-          required
+          value={currentLetter.access}
+          onChange={handleInputChange}
         >
-          <option value="">Select Access</option>
           <option value="Public">Public</option>
           <option value="Restricted">Restricted</option>
         </select>
-
-        <button type="submit" className="btn">
-          {editMode ? "Update Letter" : "Add Letter"}
+        <button className="btn" onClick={handleAddOrUpdate}>
+          {isEditing ? "Update Letter" : "Add Letter"}
         </button>
-      </form>
+      </div>
 
-      {/* List of Letters */}
-      <h2 className="heading">Manage Letters</h2>
-      <ul className="letter-list">
-        {Object.entries(letters).map(([key, letter]) => (
-          <li key={key} className="letter-item">
-            <strong>{letter.date}</strong>: {letter.sender} to {letter.receiver}
-            <br />
-            <em>{letter.notes}</em>
-            <br />
-            <button onClick={() => handleEdit(letter.id)} className="btn">
-              Edit
-            </button>
-            <button
-              onClick={() => handleDelete(letter.id)}
-              className="btn"
-              style={{ marginLeft: "10px" }}
-            >
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
+      {/* Manage Letters Section */}
+      <div className="manage-letters">
+        <h2>Manage Letters</h2>
+        <ul className="letter-list">
+          {letters.map((letter) => (
+            <li key={letter.id} className="letter-item">
+              <strong>{letter.date}</strong>: {letter.sender} to{" "}
+              {letter.receiver}
+              <br />
+              <em>{letter.notes}</em>
+              <div>
+                <button
+                  className="btn btn-edit"
+                  onClick={() => handleEdit(letter)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-delete"
+                  onClick={() => handleDelete(letter.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
