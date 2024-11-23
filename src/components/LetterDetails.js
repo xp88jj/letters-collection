@@ -1,22 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { database } from "../firebaseConfig";
-import { ref, onValue } from "firebase/database";
-import "../App.css"; // Import the CSS file for consistent styles
+import { ref, get } from "firebase/database";
+import "../App.css";
 
 const LetterDetails = () => {
-  const { id } = useParams(); // Get the letter ID from the URL
+  const { id } = useParams();
   const [letter, setLetter] = useState(null);
 
   useEffect(() => {
-    const letterRef = ref(database, `letters/letter${id}`);
-    const unsubscribe = onValue(letterRef, (snapshot) => {
-      setLetter(snapshot.val() || null);
-    });
-    return () => unsubscribe(); // Cleanup subscription on unmount
+    const possiblePaths = [`letters/${id}`, `letters/letter${id}`];
+    let found = false;
+
+    const fetchLetter = async () => {
+      for (const path of possiblePaths) {
+        const letterRef = ref(database, path);
+        const snapshot = await get(letterRef);
+        if (snapshot.exists()) {
+          setLetter(snapshot.val());
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        setLetter(null);
+      }
+    };
+
+    fetchLetter();
   }, [id]);
 
-  // Export letter details as JSON
   const downloadAsJSON = () => {
     const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(
       JSON.stringify(letter, null, 2)
@@ -27,7 +40,6 @@ const LetterDetails = () => {
     downloadAnchor.click();
   };
 
-  // Export letter details as CSV
   const downloadAsCSV = () => {
     const csvContent = [
       ["Field", "Value"],
