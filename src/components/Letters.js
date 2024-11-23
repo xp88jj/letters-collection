@@ -6,6 +6,7 @@ const Letters = () => {
   const [letters, setLetters] = useState([]);
   const [filteredLetters, setFilteredLetters] = useState([]); // To store filtered results
   const [searchTerm, setSearchTerm] = useState(""); // User's search input
+  const [filterByAccess, setFilterByAccess] = useState("All"); // Current access filter
 
   useEffect(() => {
     const lettersRef = ref(database, "letters");
@@ -29,14 +30,36 @@ const Letters = () => {
   const handleSearch = (event) => {
     const searchValue = event.target.value.toLowerCase();
     setSearchTerm(searchValue);
+    applyFilters(searchValue, filterByAccess);
+  };
 
-    // Filter letters based on sender, receiver, or notes
-    const results = letters.filter(
-      (letter) =>
-        letter.sender.toLowerCase().includes(searchValue) ||
-        letter.receiver.toLowerCase().includes(searchValue) ||
-        letter.notes.toLowerCase().includes(searchValue)
-    );
+  // Handle dropdown filter
+  const handleFilterByAccess = (event) => {
+    const selectedAccess = event.target.value;
+    setFilterByAccess(selectedAccess);
+    applyFilters(searchTerm, selectedAccess);
+  };
+
+  // Apply both search and filter logic
+  const applyFilters = (searchValue, selectedAccess) => {
+    let results = letters;
+
+    // Filter by search term
+    if (searchValue) {
+      results = results.filter(
+        (letter) =>
+          letter.sender.toLowerCase().includes(searchValue) ||
+          letter.receiver.toLowerCase().includes(searchValue) ||
+          letter.notes.toLowerCase().includes(searchValue)
+      );
+    }
+
+    // Filter by access level
+    if (selectedAccess !== "All") {
+      results = results.filter(
+        (letter) => letter.access.toLowerCase() === selectedAccess.toLowerCase()
+      );
+    }
 
     setFilteredLetters(results);
   };
@@ -51,8 +74,35 @@ const Letters = () => {
         placeholder="Search by sender, receiver, or notes..."
         value={searchTerm}
         onChange={handleSearch}
-        style={{ marginBottom: "20px", padding: "10px", width: "100%" }}
+        style={{
+          fontSize: "16px",
+          border: "1px solid #ccc",
+          borderRadius: "4px",
+          padding: "10px",
+          width: "calc(100% - 20px)",
+          boxSizing: "border-box",
+          marginBottom: "20px",
+        }}
       />
+
+      {/* Filter Dropdown */}
+      <select
+        onChange={handleFilterByAccess}
+        value={filterByAccess}
+        style={{
+          fontSize: "16px",
+          border: "1px solid #ccc",
+          borderRadius: "4px",
+          padding: "10px",
+          width: "100%",
+          boxSizing: "border-box",
+          marginBottom: "20px",
+        }}
+      >
+        <option value="All">All Access Levels</option>
+        <option value="Public">Public</option>
+        <option value="Restricted">Restricted</option>
+      </select>
 
       <ul>
         {filteredLetters.map((letter) => (
@@ -65,7 +115,7 @@ const Letters = () => {
       </ul>
 
       {/* No results message */}
-      {filteredLetters.length === 0 && <p>No letters found matching your search.</p>}
+      {filteredLetters.length === 0 && <p>No letters found matching your criteria.</p>}
     </div>
   );
 };
