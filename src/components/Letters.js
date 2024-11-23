@@ -20,7 +20,7 @@ const Letters = () => {
       const data = snapshot.val();
       if (data) {
         const lettersArray = Object.entries(data).map(([key, value]) => ({
-          id: key, // Use the Firebase key as the ID
+          id: key,
           ...value,
         }));
         setLetters(lettersArray);
@@ -118,53 +118,124 @@ const Letters = () => {
   };
 
   return (
-    <div>
+    <div style={{ maxWidth: "800px", margin: "0 auto", padding: "20px" }}>
       <h1>Letters</h1>
 
-      {/* Search Input */}
-      <input
-        type="text"
-        placeholder="Search by sender, receiver, or notes..."
-        value={searchTerm}
-        onChange={handleSearch}
+      {/* Filters Container */}
+      <div
         style={{
-          fontSize: "16px",
           border: "1px solid #ccc",
-          borderRadius: "4px",
-          padding: "10px",
-          width: "calc(100% - 20px)",
-          boxSizing: "border-box",
+          borderRadius: "8px",
+          padding: "15px",
           marginBottom: "20px",
+          backgroundColor: "#f9f9f9",
         }}
-      />
+      >
+        <div style={{ marginBottom: "10px" }}>
+          <input
+            type="text"
+            placeholder="Search by sender, receiver, or notes..."
+            value={searchTerm}
+            onChange={handleSearch}
+            style={{
+              fontSize: "16px",
+              padding: "10px",
+              width: "100%",
+              boxSizing: "border-box",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+            }}
+          />
+        </div>
 
-      {/* Filters */}
-      <select onChange={handleFilterByAccess} value={filterByAccess}>
-        <option value="All">All Access Levels</option>
-        <option value="Public">Public</option>
-        <option value="Restricted">Restricted</option>
-      </select>
-      <select onChange={handleFilterByType} value={filterByType}>
-        <option value="All">All Types</option>
-        <option value="Scanned PDF">Scanned PDF</option>
-        <option value="Original">Original</option>
-        <option value="Typed Transcript">Typed Transcript</option>
-        <option value="Photocopy">Photocopy</option>
-        <option value="Email Transcript">Email Transcript</option>
-      </select>
-      <div>
-        <label>Start Date: </label>
-        <input type="date" onChange={handleStartDateChange} />
-        <label>End Date: </label>
-        <input type="date" onChange={handleEndDateChange} />
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "10px" }}>
+          <select
+            onChange={handleFilterByAccess}
+            value={filterByAccess}
+            style={{
+              flex: "1",
+              fontSize: "16px",
+              padding: "10px",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+            }}
+          >
+            <option value="All">All Access Levels</option>
+            <option value="Public">Public</option>
+            <option value="Restricted">Restricted</option>
+          </select>
+
+          <select
+            onChange={handleFilterByType}
+            value={filterByType}
+            style={{
+              flex: "1",
+              fontSize: "16px",
+              padding: "10px",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+            }}
+          >
+            <option value="All">All Types</option>
+            <option value="Scanned PDF">Scanned PDF</option>
+            <option value="Original">Original</option>
+            <option value="Typed Transcript">Typed Transcript</option>
+            <option value="Photocopy">Photocopy</option>
+            <option value="Email Transcript">Email Transcript</option>
+          </select>
+        </div>
+
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "10px" }}>
+          <div style={{ flex: "1" }}>
+            <label>Start Date:</label>
+            <input
+              type="date"
+              onChange={handleStartDateChange}
+              style={{
+                fontSize: "16px",
+                padding: "10px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+                width: "100%",
+              }}
+            />
+          </div>
+          <div style={{ flex: "1" }}>
+            <label>End Date:</label>
+            <input
+              type="date"
+              onChange={handleEndDateChange}
+              style={{
+                fontSize: "16px",
+                padding: "10px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+                width: "100%",
+              }}
+            />
+          </div>
+        </div>
+
+        <div style={{ marginBottom: "10px" }}>
+          <select
+            onChange={handleFilterByLocation}
+            value={filterByLocation}
+            style={{
+              fontSize: "16px",
+              padding: "10px",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+              width: "100%",
+            }}
+          >
+            <option value="All">All Locations</option>
+            <option value="Library XYZ">Library XYZ</option>
+            <option value="Family Archive">Family Archive</option>
+            <option value="Private Collection">Private Collection</option>
+            <option value="Digital Archive">Digital Archive</option>
+          </select>
+        </div>
       </div>
-      <select onChange={handleFilterByLocation} value={filterByLocation}>
-        <option value="All">All Locations</option>
-        <option value="Library XYZ">Library XYZ</option>
-        <option value="Family Archive">Family Archive</option>
-        <option value="Private Collection">Private Collection</option>
-        <option value="Digital Archive">Digital Archive</option>
-      </select>
 
       {/* Filtered Letter List */}
       <ul>
