@@ -21,7 +21,7 @@ const AdminPanel = () => {
 
   useEffect(() => {
     const lettersRef = ref(database, "letters");
-    onValue(lettersRef, (snapshot) => {
+    const unsubscribe = onValue(lettersRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
         const lettersArray = Object.entries(data).map(([key, value]) => ({
@@ -33,6 +33,8 @@ const AdminPanel = () => {
         setLetters([]);
       }
     });
+
+    return () => unsubscribe(); // Clean up listener on unmount
   }, []);
 
   const handleInputChange = (e) => {
@@ -42,12 +44,26 @@ const AdminPanel = () => {
 
   const handleAddOrUpdate = () => {
     if (isEditing) {
+      // Ensure update targets the existing record
+      if (!currentLetter.id) {
+        console.error("Editing mode but no ID provided!");
+        return;
+      }
+  
       const letterRef = ref(database, `letters/${currentLetter.id}`);
-      update(letterRef, currentLetter);
+      update(letterRef, { ...currentLetter })
+        .then(() => console.log(`Letter with ID ${currentLetter.id} updated successfully`))
+        .catch((error) => console.error("Error updating letter:", error));
     } else {
+      // Add a new letter
       const newLetterRef = push(ref(database, "letters"));
-      update(newLetterRef, currentLetter);
+      const newLetterKey = newLetterRef.key; // Get auto-generated key
+      update(newLetterRef, { ...currentLetter, id: newLetterKey })
+        .then(() => console.log("New letter added successfully"))
+        .catch((error) => console.error("Error adding letter:", error));
     }
+  
+    // Reset the form
     setCurrentLetter({
       id: "",
       date: "",
@@ -68,8 +84,15 @@ const AdminPanel = () => {
   };
 
   const handleDelete = (id) => {
-    const letterRef = ref(database, `letters/${id}`);
-    remove(letterRef);
+    const letterRef = ref(database, `letters/letter${id}`);
+    remove(letterRef)
+      .then(() => {
+        console.log(`Letter with ID ${id} deleted successfully`);
+        setLetters((prevLetters) => prevLetters.filter((letter) => letter.id !== id));
+      })
+      .catch((error) => {
+        console.error("Error deleting letter:", error);
+      });
   };
 
   return (

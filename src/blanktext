@@ -1,0 +1,1093 @@
+App.js
+
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./components/Home";
+import Letters from "./components/Letters";
+import LetterDetails from "./components/LetterDetails";
+import AdminPanel from "./components/AdminPanel";
+import Statistics from "./components/Statistics";
+import Visualizations from "./components/Visualizations";
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/letters" element={<Letters />} />
+        <Route path="/letters/:id" element={<LetterDetails />} />
+        <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/statistics" element={<Statistics />} />
+        <Route path="/visualizations" element={<Visualizations />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
+
+App.class 
+
+/* Global container styling for consistent layout */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+/* Centered heading styles */
+.heading {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Description paragraph styling */
+.description {
+  font-size: 18px;
+  margin-bottom: 30px;
+  color: #555;
+  line-height: 1.8; /* Improved readability */
+  text-align: center; /* Center-align description */
+}
+
+/* Button styling */
+.btn {
+  display: inline-block;
+  padding: 15px 30px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  transition: background-color 0.3s ease; /* Smooth hover transition */
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+/* Link styling */
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Table styles for statistics and visualizations */
+.table-container {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table tr:hover {
+  background-color: #ddd;
+}
+
+/* Align buttons at the top */
+.btn-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Letter list styling */
+.letter-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.letter-item {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+  font-size: 16px;
+}
+
+.letter-item strong {
+  font-weight: bold;
+  color: #333;
+}
+
+.letter-item em {
+  color: #666;
+  font-style: italic;
+}
+
+/* Filters container styling */
+.filters-container {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+}
+
+/* Filters group styling for better alignment */
+.filters-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+/* Form input and select elements */
+.form-input,
+.form-select {
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.form-input:focus,
+.form-select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5); /* Add focus effect */
+}
+
+/* No results message */
+.no-results {
+  color: #555;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Pagination Container */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Space between buttons */
+  margin-top: 20px; /* Space above pagination */
+}
+
+/* Pagination Button */
+.pagination .btn {
+  padding: 10px 15px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination .btn:hover {
+  background-color: #0056b3;
+}
+
+/* Active Button Styling */
+.pagination .btn.active {
+  background-color: #0056b3;
+  font-weight: bold;
+  cursor: default;
+}
+
+/* Statistics Overview Styling */
+.statistics-overview {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  background-color: #f9f9f9;
+}
+
+.statistics-overview h2 {
+  font-size: 20px;
+  margin-top: 15px;
+}
+
+.statistics-overview ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.statistics-overview ul li {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+/* Visualization Heading */
+.visualizations-heading {
+  text-align: center;
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Buttons specific to Statistics and Visualizations */
+.btn-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px; /* Add spacing between buttons */
+}
+
+/* Visualization Table Styles */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 18px;
+  text-align: left;
+  background-color: #fdfdfd;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd; /* Light grid border */
+  padding: 12px; /* Slightly increased padding for better spacing */
+}
+
+.table th {
+  background-color: #007bff; /* Header background */
+  color: white; /* Header text color */
+  font-weight: bold;
+  text-align: left; /* Align header text to the left */
+}
+
+.table tr:nth-child(even) {
+  background-color: #f9f9f9; /* Light gray background for even rows */
+}
+
+.table tr:hover {
+  background-color: #f1f1f1; /* Slight hover effect */
+}
+
+.table tr:last-child td {
+  border-bottom: 2px solid #007bff; /* Stronger bottom border for the last row */
+}
+
+/* Admin Panel Styling */
+.admin-form {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px; /* Add spacing below the form */
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1); /* Optional depth */
+}
+
+.admin-form h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+}
+
+.admin-form label {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.admin-form input,
+.admin-form select,
+.admin-form textarea {
+  width: 100%;
+  font-size: 16px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.admin-form button {
+  display: block;
+  width: 100%;
+  font-size: 18px;
+  padding: 10px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.admin-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Manage Letters Section */
+.manage-letters {
+  margin-top: 30px;
+}
+
+.manage-letters h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+}
+
+.letter-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.letter-item {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 15px;
+}
+
+.letter-item strong {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.letter-item em {
+  color: #666;
+  font-style: italic;
+}
+
+.letter-item .btn {
+  display: inline-block;
+  margin-top: 10px;
+  margin-right: 10px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.letter-item .btn:hover {
+  background-color: #0056b3;
+}
+
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { database } from "../firebaseConfig";
+import { ref, onValue, push, update, remove } from "firebase/database";
+import "../App.css";
+
+const AdminPanel = () => {
+  const [letters, setLetters] = useState([]);
+  const [currentLetter, setCurrentLetter] = useState({
+    id: "",
+    date: "",
+    sender: "",
+    receiver: "",
+    type: "",
+    location: "",
+    fileLink: "",
+    notes: "",
+    access: "Public",
+  });
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    const lettersRef = ref(database, "letters");
+    const unsubscribe = onValue(lettersRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const lettersArray = Object.entries(data).map(([key, value]) => ({
+          id: key,
+          ...value,
+        }));
+        setLetters(lettersArray);
+      } else {
+        setLetters([]);
+      }
+    });
+
+    return () => unsubscribe(); // Clean up listener on unmount
+  }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCurrentLetter((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleAddOrUpdate = () => {
+    if (isEditing) {
+      const letterRef = ref(database, `letters/${currentLetter.id}`);
+      update(letterRef, currentLetter);
+    } else {
+      const newLetterRef = push(ref(database, "letters"));
+      update(newLetterRef, currentLetter);
+    }
+    setCurrentLetter({
+      id: "",
+      date: "",
+      sender: "",
+      receiver: "",
+      type: "",
+      location: "",
+      fileLink: "",
+      notes: "",
+      access: "Public",
+    });
+    setIsEditing(false);
+  };
+
+  const handleEdit = (letter) => {
+    setCurrentLetter(letter);
+    setIsEditing(true);
+  };
+
+  const handleDelete = (id) => {
+    const letterRef = ref(database, `letters/${id}`);
+    remove(letterRef)
+      .then(() => {
+        console.log(`Letter with ID ${id} deleted successfully`);
+        setLetters((prevLetters) => prevLetters.filter((letter) => letter.id !== id));
+      })
+      .catch((error) => {
+        console.error("Error deleting letter:", error);
+      });
+  };
+
+  return (
+    <div className="container">
+      {/* Back to Home Button */}
+      <div className="btn-container">
+        <Link to="/" className="btn">
+          Back to Home
+        </Link>
+      </div>
+
+      <h1 className="heading">Admin Panel</h1>
+
+      {/* Add/Edit Form */}
+      <div className="admin-form">
+        <h2>{isEditing ? "Edit Letter" : "Add New Letter"}</h2>
+        <label>ID (Leave empty for auto-generated ID):</label>
+        <input
+          type="text"
+          name="id"
+          value={currentLetter.id}
+          onChange={handleInputChange}
+          disabled={isEditing} // Prevent editing ID when editing an existing letter
+        />
+        <label>Date:</label>
+        <input
+          type="date"
+          name="date"
+          value={currentLetter.date}
+          onChange={handleInputChange}
+        />
+        <label>Sender:</label>
+        <input
+          type="text"
+          name="sender"
+          value={currentLetter.sender}
+          onChange={handleInputChange}
+        />
+        <label>Receiver:</label>
+        <input
+          type="text"
+          name="receiver"
+          value={currentLetter.receiver}
+          onChange={handleInputChange}
+        />
+        <label>Type:</label>
+        <input
+          type="text"
+          name="type"
+          value={currentLetter.type}
+          onChange={handleInputChange}
+        />
+        <label>Location:</label>
+        <input
+          type="text"
+          name="location"
+          value={currentLetter.location}
+          onChange={handleInputChange}
+        />
+        <label>File Link:</label>
+        <input
+          type="text"
+          name="fileLink"
+          value={currentLetter.fileLink}
+          onChange={handleInputChange}
+        />
+        <label>Notes:</label>
+        <textarea
+          name="notes"
+          value={currentLetter.notes}
+          onChange={handleInputChange}
+        />
+        <label>Access:</label>
+        <select
+          name="access"
+          value={currentLetter.access}
+          onChange={handleInputChange}
+        >
+          <option value="Public">Public</option>
+          <option value="Restricted">Restricted</option>
+        </select>
+        <button className="btn" onClick={handleAddOrUpdate}>
+          {isEditing ? "Update Letter" : "Add Letter"}
+        </button>
+      </div>
+
+      {/* Manage Letters Section */}
+      <div className="manage-letters">
+        <h2>Manage Letters</h2>
+        <ul className="letter-list">
+          {letters.map((letter) => (
+            <li key={letter.id} className="letter-item">
+              <strong>{letter.date}</strong>: {letter.sender} to{" "}
+              {letter.receiver}
+              <br />
+              <em>{letter.notes}</em>
+              <div>
+                <button
+                  className="btn btn-edit"
+                  onClick={() => handleEdit(letter)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-delete"
+                  onClick={() => handleDelete(letter.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default AdminPanel;
+
+
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { database } from "../firebaseConfig";
+import { ref, onValue } from "firebase/database";
+import "../App.css";
+
+const Statistics = () => {
+  const [statistics, setStatistics] = useState(null);
+
+  useEffect(() => {
+    const lettersRef = ref(database, "letters");
+    const unsubscribe = onValue(lettersRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const lettersArray = Object.values(data);
+
+        // Calculate statistics
+        const totalLetters = lettersArray.length;
+        const lettersByDecade = {};
+        const senders = {};
+        const receivers = {};
+        const types = {};
+
+        lettersArray.forEach((letter) => {
+          const { date, sender, receiver, type } = letter;
+
+          // Letters by Decade
+          const year = parseInt(date.substring(0, 4), 10);
+          if (!isNaN(year)) {
+            const decade = `${Math.floor(year / 10) * 10}s`;
+            lettersByDecade[decade] = (lettersByDecade[decade] || 0) + 1;
+          }
+
+          // Most Common Senders
+          if (sender) senders[sender] = (senders[sender] || 0) + 1;
+
+          // Most Common Receivers
+          if (receiver) receivers[receiver] = (receivers[receiver] || 0) + 1;
+
+          // Letters by Type
+          if (type) types[type] = (types[type] || 0) + 1;
+        });
+
+        // Sort and limit to top 3 for senders and receivers
+        const mostCommonSenders = Object.entries(senders)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 3)
+          .map(([sender, count]) => `${sender}: ${count}`);
+
+        const mostCommonReceivers = Object.entries(receivers)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 3)
+          .map(([receiver, count]) => `${receiver}: ${count}`);
+
+        // Save to state
+        setStatistics({
+          totalLetters,
+          lettersByDecade,
+          mostCommonSenders,
+          mostCommonReceivers,
+          types,
+        });
+      } else {
+        setStatistics(null);
+      }
+    });
+
+    return () => unsubscribe(); // Clean up listener on unmount
+  }, []);
+
+  if (statistics === null) {
+    return <p>Loading statistics...</p>;
+  }
+
+  return (
+    <div className="container">
+      {/* Back to Home Button */}
+      <div className="btn-container">
+        <Link to="/" className="btn">
+          Back to Home Page
+        </Link>
+      </div>
+
+      <h1 className="heading">Collection Statistics</h1>
+      <div className="statistics-overview">
+        <p><strong>Total Letters:</strong> {statistics.totalLetters}</p>
+
+        <h2>Letters by Decade:</h2>
+        <ul>
+          {Object.entries(statistics.lettersByDecade).map(([decade, count]) => (
+            <li key={decade}>{decade}: {count}</li>
+          ))}
+        </ul>
+
+        <h2>Most Common Senders:</h2>
+        <ul>
+          {statistics.mostCommonSenders.map((sender, index) => (
+            <li key={index}>{sender}</li>
+          ))}
+        </ul>
+
+        <h2>Most Common Receivers:</h2>
+        <ul>
+          {statistics.mostCommonReceivers.map((receiver, index) => (
+            <li key={index}>{receiver}</li>
+          ))}
+        </ul>
+
+        <h2>Letters by Type:</h2>
+        <ul>
+          {Object.entries(statistics.types).map(([type, count]) => (
+            <li key={type}>{type}: {count}</li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Go to Visualizations Button */}
+      <div className="btn-container">
+        <Link to="/visualizations" className="btn">
+          Go to Visualizations
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+export default Statistics;
+
+import React, { useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
+import { database } from "../firebaseConfig";
+import { ref, onValue } from "firebase/database";
+import debounce from "lodash/debounce";
+import "../App.css";
+
+const Letters = () => {
+  const [letters, setLetters] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [paginatedLetters, setPaginatedLetters] = useState([]);
+  const itemsPerPage = 10;
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [filterByAccess, setFilterByAccess] = useState("All");
+  const [filterByType, setFilterByType] = useState("All");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [filterByLocation, setFilterByLocation] = useState("All");
+
+  useEffect(() => {
+    const lettersRef = ref(database, "letters");
+
+    const unsubscribe = onValue(lettersRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const lettersArray = Object.entries(data).map(([key, value]) => ({
+          id: key,
+          ...value,
+        }));
+        setLetters(lettersArray);
+        paginate(lettersArray); // Initial pagination
+      } else {
+        setLetters([]);
+        setPaginatedLetters([]);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const paginate = (data) => {
+    const totalPages = Math.ceil(data.length / itemsPerPage);
+    const pages = Array.from({ length: totalPages }, (_, index) => {
+      const start = index * itemsPerPage;
+      return data.slice(start, start + itemsPerPage);
+    });
+    setPaginatedLetters(pages);
+  };
+
+  const handlePageChange = (pageIndex) => {
+    setCurrentPage(pageIndex);
+  };
+
+  // Debounced search handler using useMemo
+  const debouncedUpdateSearchTerm = useMemo(
+    () =>
+      debounce((term) => {
+        setDebouncedSearchTerm(term);
+      }, 300), // Adjust delay (e.g., 300ms)
+    [] // Empty dependency array ensures memoized debounce is stable
+  );
+
+  const handleSearchChange = (e) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term); // Update immediately for display
+    debouncedUpdateSearchTerm(term); // Debounce actual filtering
+  };
+
+  // Filtering logic using useMemo
+  const filteredLetters = useMemo(() => {
+    let results = letters;
+
+    if (debouncedSearchTerm) {
+      results = results.filter(
+        (letter) =>
+          letter.sender.toLowerCase().includes(debouncedSearchTerm) ||
+          letter.receiver.toLowerCase().includes(debouncedSearchTerm) ||
+          letter.notes.toLowerCase().includes(debouncedSearchTerm)
+      );
+    }
+
+    if (filterByAccess !== "All") {
+      results = results.filter(
+        (letter) => letter.access.toLowerCase() === filterByAccess.toLowerCase()
+      );
+    }
+
+    if (filterByType !== "All") {
+      results = results.filter(
+        (letter) => letter.type.toLowerCase() === filterByType.toLowerCase()
+      );
+    }
+
+    if (startDate) {
+      results = results.filter((letter) => new Date(letter.date) >= new Date(startDate));
+    }
+    if (endDate) {
+      results = results.filter((letter) => new Date(letter.date) <= new Date(endDate));
+    }
+
+    if (filterByLocation !== "All") {
+      results = results.filter(
+        (letter) => letter.location.toLowerCase() === filterByLocation.toLowerCase()
+      );
+    }
+
+    return results;
+  }, [
+    letters,
+    debouncedSearchTerm,
+    filterByAccess,
+    filterByType,
+    startDate,
+    endDate,
+    filterByLocation,
+  ]);
+
+  // Recalculate pagination whenever the filtered list changes
+  useEffect(() => {
+    paginate(filteredLetters);
+  }, [filteredLetters]);
+
+  return (
+    <div className="container">
+      {/* Back to Home Button */}
+      <div className="btn-center" style={{ marginBottom: "20px" }}>
+        <Link to="/" className="btn">
+          Back to Home
+        </Link>
+      </div>
+
+      <h1 className="heading">Letters</h1>
+
+      {/* Filters */}
+      <div className="filters-container">
+        <div>
+          <input
+            type="text"
+            placeholder="Search by sender, receiver, or notes..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="form-input"
+          />
+        </div>
+
+        <div className="filters-group">
+          <select onChange={(e) => setFilterByAccess(e.target.value)} value={filterByAccess} className="form-select">
+            <option value="All">All Access Levels</option>
+            <option value="Public">Public</option>
+            <option value="Restricted">Restricted</option>
+          </select>
+
+          <select onChange={(e) => setFilterByType(e.target.value)} value={filterByType} className="form-select">
+            <option value="All">All Types</option>
+            <option value="Scanned PDF">Scanned PDF</option>
+            <option value="Original">Original</option>
+            <option value="Typed Transcript">Typed Transcript</option>
+            <option value="Photocopy">Photocopy</option>
+            <option value="Email Transcript">Email Transcript</option>
+          </select>
+        </div>
+
+        <div className="filters-group">
+          <div>
+            <label>Start Date:</label>
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="form-input"
+            />
+          </div>
+          <div>
+            <label>End Date:</label>
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="form-input"
+            />
+          </div>
+        </div>
+
+        <div>
+          <select onChange={(e) => setFilterByLocation(e.target.value)} value={filterByLocation} className="form-select">
+            <option value="All">All Locations</option>
+            <option value="Library XYZ">Library XYZ</option>
+            <option value="Family Archive">Family Archive</option>
+            <option value="Private Collection">Private Collection</option>
+            <option value="Digital Archive">Digital Archive</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Letter List */}
+      <ul className="letter-list">
+        {paginatedLetters[currentPage]?.map((letter) => (
+          <li key={letter.id} className="letter-item">
+            <strong>{letter.date}</strong>: {letter.sender} to {letter.receiver}
+            <br />
+            <em>Notes: {letter.notes}</em>
+            <br />
+            <Link to={`/letters/${letter.id}`} className="btn-link">
+              View Details
+            </Link>
+          </li>
+        ))}
+      </ul>
+
+      {/* Pagination */}
+      <div className="pagination">
+        {paginatedLetters.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index)}
+            className={`btn ${currentPage === index ? "active" : ""}`}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Letters;
+
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { database } from "../firebaseConfig";
+import { ref, onValue } from "firebase/database";
+import "../App.css";
+
+const Statistics = () => {
+  const [statistics, setStatistics] = useState(null);
+
+  useEffect(() => {
+    const lettersRef = ref(database, "letters");
+    const unsubscribe = onValue(lettersRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const lettersArray = Object.values(data);
+
+        // Calculate statistics
+        const totalLetters = lettersArray.length;
+        const lettersByDecade = {};
+        const senders = {};
+        const receivers = {};
+        const types = {};
+
+        lettersArray.forEach((letter) => {
+          const { date, sender, receiver, type } = letter;
+
+          // Letters by Decade
+          const year = parseInt(date.substring(0, 4), 10);
+          if (!isNaN(year)) {
+            const decade = `${Math.floor(year / 10) * 10}s`;
+            lettersByDecade[decade] = (lettersByDecade[decade] || 0) + 1;
+          }
+
+          // Most Common Senders
+          if (sender) senders[sender] = (senders[sender] || 0) + 1;
+
+          // Most Common Receivers
+          if (receiver) receivers[receiver] = (receivers[receiver] || 0) + 1;
+
+          // Letters by Type
+          if (type) types[type] = (types[type] || 0) + 1;
+        });
+
+        // Sort and limit to top 3 for senders and receivers
+        const mostCommonSenders = Object.entries(senders)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 3)
+          .map(([sender, count]) => `${sender}: ${count}`);
+
+        const mostCommonReceivers = Object.entries(receivers)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 3)
+          .map(([receiver, count]) => `${receiver}: ${count}`);
+
+        // Save to state
+        setStatistics({
+          totalLetters,
+          lettersByDecade,
+          mostCommonSenders,
+          mostCommonReceivers,
+          types,
+        });
+      } else {
+        setStatistics(null);
+      }
+    });
+
+    return () => unsubscribe(); // Clean up listener on unmount
+  }, []);
+
+  if (statistics === null) {
+    return <p>Loading statistics...</p>;
+  }
+
+  return (
+    <div className="container">
+      {/* Back to Home Button */}
+      <div className="btn-container">
+        <Link to="/" className="btn">
+          Back to Home Page
+        </Link>
+      </div>
+
+      <h1 className="heading">Collection Statistics</h1>
+      <div className="statistics-overview">
+        <p><strong>Total Letters:</strong> {statistics.totalLetters}</p>
+
+        <h2>Letters by Decade:</h2>
+        <ul>
+          {Object.entries(statistics.lettersByDecade).map(([decade, count]) => (
+            <li key={decade}>{decade}: {count}</li>
+          ))}
+        </ul>
+
+        <h2>Most Common Senders:</h2>
+        <ul>
+          {statistics.mostCommonSenders.map((sender, index) => (
+            <li key={index}>{sender}</li>
+          ))}
+        </ul>
+
+        <h2>Most Common Receivers:</h2>
+        <ul>
+          {statistics.mostCommonReceivers.map((receiver, index) => (
+            <li key={index}>{receiver}</li>
+          ))}
+        </ul>
+
+        <h2>Letters by Type:</h2>
+        <ul>
+          {Object.entries(statistics.types).map(([type, count]) => (
+            <li key={type}>{type}: {count}</li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Go to Visualizations Button */}
+      <div className="btn-container">
+        <Link to="/visualizations" className="btn">
+          Go to Visualizations
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+export default Statistics;
