@@ -6,7 +6,7 @@ const Home = () => {
     <div style={{ maxWidth: "800px", margin: "0 auto", padding: "20px", textAlign: "center" }}>
       <h1 style={{ fontSize: "36px", marginBottom: "20px", color: "#333" }}>Welcome to the Letter Collection</h1>
       <p style={{ fontSize: "18px", marginBottom: "30px", color: "#555", lineHeight: "1.6" }}>
-        Discover and explore a curated archive of letters spanning decades. Navigate through the
+        Discover and explore a curated archive of letters. Navigate through the
         collection, search for specific letters, or filter by various categories. Every letter tells a
         unique story that connects people, events, and history.
       </p>

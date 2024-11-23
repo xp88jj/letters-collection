@@ -119,7 +119,10 @@ const Letters = () => {
 
   return (
     <div style={{ maxWidth: "800px", margin: "0 auto", padding: "20px" }}>
-      <h1>Letters</h1>
+      {/* Centered Letters Heading */}
+      <h1 style={{ textAlign: "center", fontSize: "32px", marginBottom: "20px", color: "#333" }}>
+        Letters
+      </h1>
 
       {/* Filters Container */}
       <div
